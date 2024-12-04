@@ -1,29 +1,12 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import AddTask from "./components/AddTask"
 import Tasks from "./components/Tasks"
 import { v4 } from "uuid"
 
 function App() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: 'Estudar Programcao',
-      description: 'Estudar programacao para se tornar desenvolvedor full stack',
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      title: 'Ingles',
-      description: 'Estudar ingles no youtube',
-      isCompleted: false,
-    },
-    {
-      id: 3,
-      title: 'Matematica',
-      description: 'Estudar Algebra Linear no youtube',
-      isCompleted: false,
-    },
-  ])
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem('tasks') || [])
+  )
 
   function onTaskClick(taskId) {
     const newTasks = tasks.map(task => {
@@ -52,6 +35,10 @@ function App() {
 
     setTasks([...tasks, newTask])
   }
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+  }, [tasks])
   
   return (
     <div className="h-screen w-screen flex justify-center p-6 bg-slate-500">
